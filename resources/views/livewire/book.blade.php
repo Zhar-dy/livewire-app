@@ -27,6 +27,8 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
+                -
+               <input type="text" wire:model.live="search" class="form-control" placeholder="Search for a book...">
                 <div class="card-body">
                     <table class="table">
                         <thead>
@@ -37,6 +39,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if (!empty($books))
                             @foreach ($books as $key => $book)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
@@ -44,6 +47,7 @@
                                 <td><button wire:click="edit({{$book->id}})" class="btn btn-primary btn-sm">Edit</button></td>
                             </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

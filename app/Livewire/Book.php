@@ -4,22 +4,24 @@ namespace App\Livewire;
 
 use App\Models\Book as ModelsBook;
 use Livewire\Component;
+use Livewire\Attributes\Url;
 
 class Book extends Component
 {
-    public $books, $name, $bookID, $bookUP;
+    public $books= [];
+    public $name, $bookID, $bookUP;
     public $title = '';
+    public $search = '';
     public $editBook = false;
-
-    public function mount()
-    {
-        $this->books = ModelsBook::all();
-    }
 
     public function render()
     {
+        $this->books = ModelsBook::query()
+        ->where('title', 'like', '%' . $this->search . '%')
+        ->get();
+
         return view('livewire.book', [
-            'books' => $this->books,
+            'books' => $this->  books
         ]);
     }
 
@@ -27,7 +29,6 @@ class Book extends Component
     {
         ModelsBook::create(['title' => $this->title]);
         $this->title = '';
-        $this->books = ModelsBook::all();
     }
 
     public function edit($id)
@@ -46,6 +47,6 @@ class Book extends Component
         $bookUP->update([ 'title' => $this->name,]);
         $this->reset(['name','bookID']);
         $this->editBook = false;
-        $this->books = ModelsBook::all();
     }
+
 }
