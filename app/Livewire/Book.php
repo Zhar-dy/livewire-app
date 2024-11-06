@@ -4,21 +4,48 @@ namespace App\Livewire;
 
 use App\Models\Book as ModelsBook;
 use Livewire\Component;
-use Illuminate\Http\Request;
 
 class Book extends Component
 {
-    public function store(Request $request)
-    {
-        ModelsBook::create([
-            'user_id' => auth()->id(),
-            'name' => $request->name,
-        ]);
+    public $books, $name, $bookID, $bookUP;
+    public $title = '';
+    public $editBook = false;
 
-        $this->reset();
+    public function mount()
+    {
+        $this->books = ModelsBook::all();
     }
+
     public function render()
     {
-        return view('livewire.book');
+        return view('livewire.book', [
+            'books' => $this->books,
+        ]);
+    }
+
+    public function store()
+    {
+        ModelsBook::create(['title' => $this->title]);
+        $this->title = '';
+        $this->books = ModelsBook::all();
+    }
+
+    public function edit($id)
+    {
+        $modelbook = ModelsBook::findOrFail($id);
+        if ($modelbook) {
+            $this->name = $modelbook->title;
+            $this->bookID = $modelbook->id;
+            $this->editBook = true;
+        }
+    }
+
+    public function update()
+    {
+        $bookUP = ModelsBook::findOrFail($this->bookID);
+        $bookUP->update([ 'title' => $this->name,]);
+        $this->reset(['name','bookID']);
+        $this->editBook = false;
+        $this->books = ModelsBook::all();
     }
 }
