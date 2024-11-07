@@ -49,4 +49,9 @@ class Book extends Component
         $this->editBook = false;
     }
 
+    public function delete($id)
+    {
+        $book = ModelsBook::findOrFail($id);
+        $book->delete();
+    }
 }

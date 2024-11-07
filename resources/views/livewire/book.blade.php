@@ -28,7 +28,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
                 -
-               <input type="text" wire:model.live="search" class="form-control" placeholder="Search for a book...">
+                <input type="text" wire:model.live="search" class="form-control" placeholder="Search for a book...">
                 <div class="card-body">
                     <table class="table">
                         <thead>
@@ -44,7 +44,10 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ $book->title }}</td>
-                                <td><button wire:click="edit({{$book->id}})" class="btn btn-primary btn-sm">Edit</button></td>
+                                <td>
+                                    <button wire:click="edit({{$book->id}})" class="btn btn-primary btn-sm">Edit</button>
+                                    <button wire:click="delete({{$book->id}})" class="btn btn-danger"></button>
+                                </td>
                             </tr>
                             @endforeach
                             @endif
